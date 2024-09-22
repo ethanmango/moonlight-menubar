@@ -1,4 +1,4 @@
-#include <QGuiApplication>
+#include <QApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include <QIcon>
@@ -12,6 +12,11 @@
 #include <QElapsedTimer>
 #include <QTemporaryFile>
 #include <QRegularExpression>
+#include <QOperatingSystemVersion>
+#include <QSystemTrayIcon>
+#include <QMenu>
+#include <QAction>
+#include <QApplication>
 
 // Don't let SDL hook our main function, since Qt is already
 // doing the same thing. This needs to be before any headers
@@ -385,8 +390,8 @@ int main(int argc, char *argv[])
     // Avoid using High DPI on EGLFS. It breaks font rendering.
     // https://bugreports.qt.io/browse/QTBUG-64377
     //
-    // NB: We can't use QGuiApplication::platformName() here because it is only
-    // set once the QGuiApplication is created, which is too late to enable High DPI :(
+    // NB: We can't use QApplication::platformName() here because it is only
+    // set once the QApplication is created, which is too late to enable High DPI :(
     if (WMUtils::isRunningWindowManager()) {
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
         // Enable High DPI support on Qt 5.x. It is always enabled on Qt 6.0
@@ -395,7 +400,7 @@ int main(int argc, char *argv[])
 
 #if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
         // Enable fractional High DPI scaling on Qt 5.14 and later
-        QGuiApplication::setHighDpiScaleFactorRoundingPolicy(Qt::HighDpiScaleFactorRoundingPolicy::PassThrough);
+        QApplication::setHighDpiScaleFactorRoundingPolicy(Qt::HighDpiScaleFactorRoundingPolicy::PassThrough);
 #endif
     }
     else {
@@ -507,7 +512,7 @@ int main(int argc, char *argv[])
 
 #ifdef STEAM_LINK
     // Steam Link requires that we initialize video before creating our
-    // QGuiApplication in order to configure the framebuffer correctly.
+    // QApplication in order to configure the framebuffer correctly.
     if (SDL_InitSubSystem(SDL_INIT_VIDEO) != 0) {
         SDL_LogError(SDL_LOG_CATEGORY_APPLICATION,
                      "SDL_InitSubSystem(SDL_INIT_VIDEO) failed: %s",
@@ -561,12 +566,12 @@ int main(int argc, char *argv[])
     SDL_SetHint(SDL_HINT_WINDOWS_DISABLE_THREAD_NAMING, "0");
 #endif
 
-    QGuiApplication app(argc, argv);
+    QApplication app(argc, argv);
 
 #ifndef STEAM_LINK
     // Force use of the KMSDRM backend for SDL when using Qt platform plugins
     // that directly draw to the display without a windowing system.
-    if (QGuiApplication::platformName() == "eglfs" || QGuiApplication::platformName() == "linuxfb") {
+    if (QApplication::platformName() == "eglfs" || QApplication::platformName() == "linuxfb") {
         qputenv("SDL_VIDEODRIVER", "kmsdrm");
     }
 #endif
@@ -623,14 +628,14 @@ int main(int argc, char *argv[])
     QCoreApplication::translate("QPlatformTheme", "Help");
     QCoreApplication::translate("QPlatformTheme", "Cancel");
 
-    // After the QGuiApplication is created, the platform stuff will be initialized
+    // After the QApplication is created, the platform stuff will be initialized
     // and we can set the SDL video driver to match Qt.
-    if (WMUtils::isRunningWayland() && QGuiApplication::platformName() == "xcb") {
+    if (WMUtils::isRunningWayland() && QApplication::platformName() == "xcb") {
         SDL_LogWarn(SDL_LOG_CATEGORY_APPLICATION,
                     "Detected XWayland. This will probably break hardware decoding! Try running with QT_QPA_PLATFORM=wayland or switch to X11.");
         qputenv("SDL_VIDEODRIVER", "x11");
     }
-    else if (QGuiApplication::platformName().startsWith("wayland")) {
+    else if (QApplication::platformName().startsWith("wayland")) {
         SDL_LogInfo(SDL_LOG_CATEGORY_APPLICATION, "Detected Wayland");
         qputenv("SDL_VIDEODRIVER", "wayland");
     }
@@ -650,7 +655,7 @@ int main(int argc, char *argv[])
     // gamepad-only navigation.
     QCursor().setPos(0xFFFF, 0xFFFF);
 #elif !SDL_VERSION_ATLEAST(2, 0, 11) && defined(Q_OS_LINUX) && (defined(__arm__) || defined(__aarch64__))
-    if (qgetenv("SDL_VIDEO_GL_DRIVER").isEmpty() && QGuiApplication::platformName() == "eglfs") {
+    if (qgetenv("SDL_VIDEO_GL_DRIVER").isEmpty() && QApplication::platformName() == "eglfs") {
         // Look for Raspberry Pi GLES libraries. SDL 2.0.10 and earlier needs some help finding
         // the correct libraries for the KMSDRM backend if not compiled with the RPI backend enabled.
         if (SDL_LoadObject("libbrcmGLESv2.so") != nullptr) {
@@ -723,6 +728,7 @@ int main(int argc, char *argv[])
     QQmlApplicationEngine engine;
     QString initialView;
     bool hasGUI = true;
+    bool isMacOs = QOperatingSystemVersion::currentType() == QOperatingSystemVersion::MacOS;
 
     switch (commandLineParserResult) {
     case GlobalCommandLineParser::NormalStartRequested:
@@ -769,13 +775,62 @@ int main(int argc, char *argv[])
         }
     }
 
+
+
     if (hasGUI) {
         engine.rootContext()->setContextProperty("initialView", initialView);
 
-        // Load the main.qml file
-        engine.load(QUrl(QStringLiteral("qrc:/gui/main.qml")));
-        if (engine.rootObjects().isEmpty())
-            return -1;
+        // Load the macos menubar version instead of default
+        if (!isMacOs) {
+            // Create a QSystemTrayIcon as a persistent object
+            QSystemTrayIcon *trayIcon = new QSystemTrayIcon();
+            trayIcon->setIcon(QIcon(":/res/moonlight.svg"));
+
+            // Load the QML for the menu bar GUI
+            engine.load(QUrl(QStringLiteral("qrc:/menubar_gui/main.qml")));
+
+            if (engine.rootObjects().isEmpty())
+                return -1;
+
+            // Get the root QML object (assuming it's a Window or Item)
+            QObject *rootObject = engine.rootObjects().first();
+            QWindow *qmlWindow = qobject_cast<QWindow *>(rootObject);
+
+            // Make sure the window is hidden by default
+            if (qmlWindow) {
+                qmlWindow->hide();
+            }
+
+            //Toggle application when icon is pressed
+            QObject::connect(trayIcon, &QSystemTrayIcon::activated, [qmlWindow, trayIcon](QSystemTrayIcon::ActivationReason reason) {
+                if (reason == QSystemTrayIcon::Trigger && qmlWindow) {
+                    if (qmlWindow->isVisible()) {
+                        qmlWindow->hide();  // If the window is visible, hide it
+                    } else {
+                        QRect iconGeometry = trayIcon->geometry();
+
+                        int x = iconGeometry.center().x() - (qmlWindow->width() / 2);  // Center horizontally
+                        int y = iconGeometry.bottom();  // Position right below the tray icon
+
+                        qmlWindow->setPosition(x, y);
+
+                        qmlWindow->show();
+                        qmlWindow->raise();
+                        qmlWindow->requestActivate();
+                    }
+                }
+            });
+
+            // Show the tray icon
+            trayIcon->show();
+
+        }
+
+        else { engine.load(QUrl(QStringLiteral("qrc:/gui/main.qml")));
+            if (engine.rootObjects().isEmpty())
+                return -1;
+        }
+
     }
 
     int err = app.exec();

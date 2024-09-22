@@ -44,5 +44,7 @@
 	<string>VERSION</string>
 	<key>CFBundleDisplayName</key>
 	<string>Moonlight</string>
+	<key>LSUIElement</key>
+    <string>1</string>
 </dict>
 </plist>
