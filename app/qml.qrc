@@ -19,30 +19,6 @@
         <file>gui/NavigableDialog.qml</file>
         <file>gui/CenteredGridView.qml</file>
         <file>gui/CliPair.qml</file>
-        <file>menubar_gui/appmodel.cpp</file>
-        <file>menubar_gui/appmodel.h</file>
-        <file>menubar_gui/AppView.qml</file>
-        <file>menubar_gui/AutoResizingComboBox.qml</file>
-        <file>menubar_gui/CenteredGridView.qml</file>
-        <file>menubar_gui/CliPair.qml</file>
-        <file>menubar_gui/CliQuitStreamSegue.qml</file>
-        <file>menubar_gui/CliStartStreamSegue.qml</file>
-        <file>menubar_gui/computermodel.cpp</file>
-        <file>menubar_gui/computermodel.h</file>
-        <file>menubar_gui/ErrorMessageDialog.qml</file>
-        <file>menubar_gui/GamepadMapper.qml</file>
-        <file>menubar_gui/main.qml</file>
-        <file>menubar_gui/NavigableDialog.qml</file>
-        <file>menubar_gui/NavigableItemDelegate.qml</file>
-        <file>menubar_gui/NavigableMenu.qml</file>
-        <file>menubar_gui/NavigableMenuItem.qml</file>
-        <file>menubar_gui/NavigableMessageDialog.qml</file>
-        <file>menubar_gui/NavigableToolButton.qml</file>
-        <file>menubar_gui/PcView.qml</file>
-        <file>menubar_gui/QuitSegue.qml</file>
-        <file>menubar_gui/sdlgamepadkeynavigation.cpp</file>
-        <file>menubar_gui/sdlgamepadkeynavigation.h</file>
-        <file>menubar_gui/SettingsView.qml</file>
-        <file>menubar_gui/StreamSegue.qml</file>
+        <file>menubar-gui/App.qml</file>
     </qresource>
 </RCC>

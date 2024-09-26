@@ -781,13 +781,13 @@ int main(int argc, char *argv[])
         engine.rootContext()->setContextProperty("initialView", initialView);
 
         // Load the macos menubar version instead of default
-        if (!isMacOs) {
+        if (isMacOs) {
             // Create a QSystemTrayIcon as a persistent object
             QSystemTrayIcon *trayIcon = new QSystemTrayIcon();
             trayIcon->setIcon(QIcon(":/res/moonlight.svg"));
 
             // Load the QML for the menu bar GUI
-            engine.load(QUrl(QStringLiteral("qrc:/menubar_gui/main.qml")));
+            engine.load(QUrl(QStringLiteral("qrc:/menubar-gui/App.qml")));
 
             if (engine.rootObjects().isEmpty())
                 return -1;
