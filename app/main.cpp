@@ -53,6 +53,10 @@
 #include "settings/streamingpreferences.h"
 #include "gui/sdlgamepadkeynavigation.h"
 
+#ifdef Q_OS_MAC
+extern void addBlurEffectToWindow(QWindow *window);
+#endif
+
 #if defined(Q_OS_WIN32)
 #define IS_UNSPECIFIED_HANDLE(x) ((x) == INVALID_HANDLE_VALUE || (x) == NULL)
 
@@ -796,9 +800,10 @@ int main(int argc, char *argv[])
             QObject *rootObject = engine.rootObjects().first();
             QWindow *qmlWindow = qobject_cast<QWindow *>(rootObject);
 
-            // Make sure the window is hidden by default
+            // Apply macOS blur effect using NSVisualEffectView
             if (qmlWindow) {
-                qmlWindow->hide();
+                addBlurEffectToWindow(qmlWindow);
+                qmlWindow->hide(); // Hide in menubar by default
             }
 
             //Toggle application when icon is pressed
@@ -810,7 +815,7 @@ int main(int argc, char *argv[])
                         QRect iconGeometry = trayIcon->geometry();
 
                         int x = iconGeometry.center().x() - (qmlWindow->width() / 2);  // Center horizontally
-                        int y = iconGeometry.bottom();  // Position right below the tray icon
+                        int y = iconGeometry.bottom() + 14;  // Position right below the tray icon, with some gap
 
                         qmlWindow->setPosition(x, y);
 

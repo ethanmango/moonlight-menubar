@@ -65,6 +65,13 @@ macx:!disable-prebuilts {
     QMAKE_CFLAGS += -F$$PWD/../libs/mac/Frameworks
     QMAKE_CXXFLAGS += -F$$PWD/../libs/mac/Frameworks
     QMAKE_OBJECTIVE_CFLAGS += -F$$PWD/../libs/mac/Frameworks
+
+    # Add support for Objective-C++ (.mm) files
+    OBJECTIVE_SOURCES += menubar-gui/macos_blur.mm
+
+    # Specify the minimum macOS version and link to Cocoa framework for macOS native views
+    QMAKE_MACOSX_DEPLOYMENT_TARGET = 13.0
+    LIBS += -framework Cocoa
 }
 
 unix:if(!macx|disable-prebuilts) {
