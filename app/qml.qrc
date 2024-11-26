@@ -20,5 +20,9 @@
         <file>gui/CenteredGridView.qml</file>
         <file>gui/CliPair.qml</file>
         <file>menubar-gui/App.qml</file>
+        <file>menubar-gui/Header.qml</file>
+        <file>menubar-gui/Constants.qml</file>
+        <file>menubar-gui/qmldir</file>
+        <file>menubar-gui/Colors.qml</file>
     </qresource>
 </RCC>
