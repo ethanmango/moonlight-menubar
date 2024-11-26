@@ -1,9 +1,12 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
+import QtQuick.Window 2.15
+import "qrc:/menubar-gui" 1.0
 
 Window {
-    width: constants.width
-    height: constants.height
+    width: Constants.defaultWindowWidth
+    height: Constants.defaultWindowWidth
+    id: window
 
     visible: true
     title: "Moonlight"
@@ -11,19 +14,22 @@ Window {
     color: "transparent"
     opacity: 1
 
-    QtObject {
-        id: constants
-        property int width: 400
-        property int height: 700
 
-    }
-    //Represents the fully blurred background
     Rectangle {
-        id: rectangle
-        width: constants.width
-        height: constants.height
-        color: constants.backgroundColor
-        opacity: 0
+        id: appContainer
+        width: window.width
+        height: window.height
+        opacity: 1
+        color: "transparent"
+        radius: 1
+
+        Header {
+            id: header
+        }
 
     }
+    Component.onCompleted: {
+            console.log("Screen Width:", Constants.screenWidth)
+        }
 }
+

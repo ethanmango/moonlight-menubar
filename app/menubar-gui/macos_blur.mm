@@ -13,7 +13,7 @@ void addBlurEffectToWindow(QWindow *window) {
 
     // Create the NSVisualEffectView for blur
     NSVisualEffectView *blurView = [[NSVisualEffectView alloc] initWithFrame:[nsWindow.contentView bounds]];
-    [blurView setMaterial:NSVisualEffectMaterialMenu]; // Or other materials
+    [blurView setMaterial:NSVisualEffectMaterialMenu];
     [blurView setBlendingMode:NSVisualEffectBlendingModeBehindWindow];
     [blurView setState:NSVisualEffectStateActive];
 
@@ -22,6 +22,6 @@ void addBlurEffectToWindow(QWindow *window) {
     blurView.layer.cornerRadius = 15.0; // Set your desired corner radius
     blurView.layer.masksToBounds = YES; // Ensures the corners are clipped
 
-    // Add the blur view to the NSWindow's content view
-    [nsWindow.contentView addSubview:blurView positioned:NSWindowBelow relativeTo:nil];
+    [nsWindow.contentView.superview addSubview:blurView positioned:NSWindowBelow relativeTo:nsWindow.contentView];
+
 }
