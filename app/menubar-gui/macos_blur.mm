@@ -24,4 +24,11 @@ void addBlurEffectToWindow(QWindow *window) {
 
     [nsWindow.contentView.superview addSubview:blurView positioned:NSWindowBelow relativeTo:nsWindow.contentView];
 
+// Add a resize observer to dynamically adjust the blur view frame
+    [[NSNotificationCenter defaultCenter] addObserverForName:NSWindowDidResizeNotification
+                                                      object:nsWindow
+                                                       queue:[NSOperationQueue mainQueue]
+                                                  usingBlock:^(NSNotification * _Nonnull notification) {
+        [blurView setFrame:[nsWindow.contentView bounds]]; // Update frame on resize
+    }];
 }
