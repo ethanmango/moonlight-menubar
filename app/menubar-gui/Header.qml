@@ -7,15 +7,17 @@ Item {
         id: topBarCurved
         width: Constants.defaultWindowWidth
         height: Constants.defaultWindowWidth * 0.05
+        //TODO: Set radius of this to whatever macos window radius is to match
         radius: Constants.radiusInPixels
         color: Colors.primary
     }
     IconImage {
-        source: "qrc:/res/header-bar.svg"
+        source: "qrc:/res/heading.svg"
         sourceSize {
             width: Constants.defaultWindowWidth
         }
-        y: Constants.defaultWindowWidth * 0.03
+        //Can really have this at 0, but makes sure the radius of the window scales with size
+        y: Constants.defaultWindowWidth * 0.001
         color: Colors.primary
 
 
@@ -28,7 +30,7 @@ Item {
             anchors.left: parent.left
             anchors.leftMargin: parent.width * 0.033
             //Cannot use anchors for y as easily, using a hacked together header shape
-            y: -1 * parent.height * 0.08
+            y: (sourceSize.width / 3)
 
         }
         IconImage {
@@ -38,7 +40,7 @@ Item {
             }
             anchors.right: parent.right
             anchors.rightMargin: parent.width * 0.035
-            y: -1 * parent.height * 0.04
+            y: (sourceSize.width / 1.8)
         }
     }
 

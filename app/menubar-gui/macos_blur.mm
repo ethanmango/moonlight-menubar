@@ -19,7 +19,7 @@ void addBlurEffectToWindow(QWindow *window) {
 
     // Enable layer backing and set corner radius
     [blurView setWantsLayer:YES];
-    blurView.layer.cornerRadius = 15.0; // Set your desired corner radius
+    blurView.layer.cornerRadius = 30.0; // Set your desired corner radius
     blurView.layer.masksToBounds = YES; // Ensures the corners are clipped
 
     [nsWindow.contentView.superview addSubview:blurView positioned:NSWindowBelow relativeTo:nsWindow.contentView];

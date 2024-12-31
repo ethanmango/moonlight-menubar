@@ -21,7 +21,8 @@ Window {
         height: window.height
         opacity: 1
         color: "transparent"
-        radius: 1
+        radius: 30
+        clip: true
 
         Header {
             id: header

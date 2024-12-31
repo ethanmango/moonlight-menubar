@@ -70,7 +70,7 @@
         <file>languages/qml_lt.qm</file>
         <file>languages/qml_et.ts</file>
         <file>languages/qml_et.qm</file>
-        <file>res/header-bar.svg</file>
+        <file>res/heading.svg</file>
         <file>res/settings-icon.svg</file>
     </qresource>
     <qresource prefix="/data">
