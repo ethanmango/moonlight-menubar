@@ -5,7 +5,7 @@ import "qrc:/menubar-gui" 1.0
 
 Window {
     width: Constants.defaultWindowWidth
-    height: appContainer.implicitHeight // Dynamically set window height
+    height: appContainer.implicitHeight
     id: window
     visible: true
     title: "Moonlight"
@@ -16,6 +16,8 @@ Window {
     maximumHeight: appContainer.implicitHeight
     minimumWidth: Constants.defaultWindowWidth
     maximumWidth: Constants.defaultWindowWidth
+
+    property int currentState: AppState.noConnections
 
     Rectangle {
         id: appContainer
@@ -30,6 +32,8 @@ Window {
                         easing.type: Easing.OutQuad
                     }
                 }
+
+
         Column {
                     id: column
                     anchors.fill: parent
@@ -40,47 +44,10 @@ Window {
                         height: Constants.defaultWindowWidth * 0.13
                     }
 
-                    Rectangle {
-                        id: content
-                        width: parent.width
-                        height: Constants.defaultWindowWidth * 0.17
-                        color: "transparent"
-
-                        Text {
-                            anchors.centerIn: parent
-                            text: "No established connections\nPlease add a new PC below"
-                            font.pixelSize: Constants.fontSizePixels
-                            font.family: "SF Pro"
-                            font.bold: true
-                            color: Colors.textSecondary
-                        }
+                    NoConnectionsContent {
+                        id: noConnectionsContent
                     }
 
-                    Item {
-                        width: parent.width
-                        implicitHeight: footer.height
-
-                        Rectangle {
-                            id: footer
-                            width: parent.width
-                            height: Constants.defaultWindowWidth * 0.12
-                            color: Colors.primary
-                            opacity: 0.43
-                            radius: Constants.radiusInPixels
-                            anchors.bottom: parent.bottom
-                        }
-
-                        // Button {
-                        //     id: doubleHeightButton
-                        //     text: "Double Height"
-                        //     anchors.horizontalCenter: footer.horizontalCenter
-                        //     anchors.bottom: footer.bottom
-                        //     anchors.bottomMargin: 5
-                        //     onClicked: {
-                        //         content.height *= 2
-                        //     }
-                        // }
-                    }
                 }
 
 

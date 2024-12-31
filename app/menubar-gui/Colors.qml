@@ -9,4 +9,7 @@ QtObject {
     property color textSecondary: "#ADADAD"
     property color textPrimary: "#FFFFFF"
     property color warning: "#FFF7A1"
+    property color button: "#3D3F3E"
+    //Used for good looking color transitions from transparent
+    property color primaryTransparent:  Qt.rgba(24 / 255, 24 / 255, 24 / 255, 0)
 }
