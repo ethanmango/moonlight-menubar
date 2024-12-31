@@ -33,42 +33,53 @@ Window {
         Column {
                     id: column
                     anchors.fill: parent
-                    spacing: 10 // Adjust spacing between rows if needed
 
                     Header {
                         id: header
                         width: parent.width
-                        height: 50 // Example height for the header
+                        height: Constants.defaultWindowWidth * 0.13
                     }
 
                     Rectangle {
                         id: content
                         width: parent.width
-                        height: 200 // Example height for content
+                        height: Constants.defaultWindowWidth * 0.17
                         color: "transparent"
+
                         Text {
                             anchors.centerIn: parent
-                            text: "Content Area"
-                            font.pixelSize: 16
-                            color: "white"
+                            text: "No established connections\nPlease add a new PC below"
+                            font.pixelSize: Constants.fontSizePixels
+                            font.family: "SF Pro"
+                            font.bold: true
+                            color: Colors.textSecondary
                         }
                     }
 
-                    Rectangle {
-                        id: footer
+                    Item {
                         width: parent.width
-                        height: 50 // Example height for the footer
-                        color: "transparent"
-                        Button {
-                                    id: doubleHeightButton
-                                    text: "Double Height"
-                                    anchors.horizontalCenter: parent.horizontalCenter
-                                    anchors.bottom: parent.bottom
-                                    anchors.bottomMargin: 10
-                                    onClicked: {
-                                        content.height *= 2
-                                    }
-                                }
+                        implicitHeight: footer.height
+
+                        Rectangle {
+                            id: footer
+                            width: parent.width
+                            height: Constants.defaultWindowWidth * 0.12
+                            color: Colors.primary
+                            opacity: 0.43
+                            radius: Constants.radiusInPixels
+                            anchors.bottom: parent.bottom
+                        }
+
+                        // Button {
+                        //     id: doubleHeightButton
+                        //     text: "Double Height"
+                        //     anchors.horizontalCenter: footer.horizontalCenter
+                        //     anchors.bottom: footer.bottom
+                        //     anchors.bottomMargin: 5
+                        //     onClicked: {
+                        //         content.height *= 2
+                        //     }
+                        // }
                     }
                 }
 
@@ -76,6 +87,7 @@ Window {
     }
     Component.onCompleted: {
             console.log("Screen Width:", Constants.screenWidth)
+            console.log("Default app width:", Constants.defaultWindowWidth)
         }
 }
 

@@ -832,7 +832,8 @@ int main(int argc, char *argv[])
                         QRect iconGeometry = trayIcon->geometry();
 
                         int x = iconGeometry.center().x() - (qmlWindow->width() / 2);  // Center horizontally
-                        int y = iconGeometry.bottom() + 14;  // Position right below the tray icon, with some gap
+                        //TODO: Based on resolution
+                        int y = iconGeometry.bottom() + 30;  // Position right below the tray icon, with some gap
 
                         qmlWindow->setPosition(x, y);
 

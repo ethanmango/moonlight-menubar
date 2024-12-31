@@ -3,10 +3,11 @@ import QtQuick 2.15
 import QtQuick.Templates 2.15
 import QtQuick.Controls
 Item {
+
     Rectangle {
         id: topBarCurved
         width: Constants.defaultWindowWidth
-        height: Constants.defaultWindowWidth * 0.05
+        height: Constants.defaultWindowWidth * 0.1
         //TODO: Set radius of this to whatever macos window radius is to match
         radius: Constants.radiusInPixels
         color: Colors.primary
