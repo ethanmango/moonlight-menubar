@@ -31,41 +31,42 @@ Item {
                         return translatedText.replace(/\.*$/, ""); // Remove trailing dots
             }
         }
-        Text {
-                id: dotsText
-                anchors.horizontalCenter: parent.horizontalCenter
-                anchors.top: parent.children[0].bottom
-                anchors.topMargin: -1 * parent.height * 0.08
-                font.pixelSize: Constants.fontSize2
-                font.family: "SF Pro"
-                font.bold: true
-                color: Colors.textSecondary
+        Rectangle {
+            id: spinnerContainer
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.top: parent.children[0].bottom
+            anchors.topMargin: -1 * parent.height * 0.25
+            width: 75
+            height: 75
+            color: "transparent"
 
-                text: dots
+            // Use a Canvas for the circle
+            Canvas {
+                anchors.fill: parent
 
-                property string dots: "..."
+                onPaint: {
+                    var ctx = getContext("2d");
+                    ctx.clearRect(0, 0, width, height);
+                    ctx.lineWidth = width/21;
+                    ctx.strokeStyle = Colors.textPrimary;
 
-                Timer {
-                    id: loadingTimer
-                    interval: 500
-                    running: StreamingPreferences.enableMdns
-                    repeat: true
-                    onTriggered: {
-                        if (dotsText.dots === "...") {
-                            dotsText.dots = "";
-                        } else if (dotsText.dots === "") {
-                            dotsText.dots = ".";
-                        } else {
-                            dotsText.dots += ".";
-                        }
-                    }
+                    ctx.beginPath();
+                    ctx.arc(width / 2, height / 2, 7, 0, Math.PI * 1.5, false);
+                    ctx.stroke();
                 }
-
-                Component.onCompleted: {
-                    loadingTimer.start();
-                }
-
             }
+
+            // Rotation animation for spinning
+            RotationAnimator {
+                target: spinnerContainer
+                from: 0
+                to: 360
+                duration: 1000
+                loops: Animation.Infinite
+                running: true
+            }
+        }
+
     }
 
 
