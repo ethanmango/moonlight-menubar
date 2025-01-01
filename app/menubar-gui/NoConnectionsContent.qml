@@ -35,9 +35,9 @@ Item {
             id: spinnerContainer
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.top: parent.children[0].bottom
-            anchors.topMargin: -1 * parent.height * 0.25
-            width: 75
-            height: 75
+            anchors.topMargin: -1 * parent.height * 0.235
+            width: parent.width * 0.12
+            height: parent.width * 0.12
             color: "transparent"
 
             // Use a Canvas for the circle
@@ -48,10 +48,10 @@ Item {
                     var ctx = getContext("2d");
                     ctx.clearRect(0, 0, width, height);
                     ctx.lineWidth = width/21;
-                    ctx.strokeStyle = Colors.textPrimary;
+                    ctx.strokeStyle = Colors.textSecondary;
 
                     ctx.beginPath();
-                    ctx.arc(width / 2, height / 2, 7, 0, Math.PI * 1.5, false);
+                    ctx.arc(width / 2, height / 2, width/10.7, 0, Math.PI * 1.5, false);
                     ctx.stroke();
                 }
             }
