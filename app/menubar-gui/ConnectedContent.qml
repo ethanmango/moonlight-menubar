@@ -6,16 +6,14 @@ import "qrc:/menubar-gui" 1.0
 //Content of app when no connections are made yet
 
 Column  {
+    id: columnnn
     spacing: 0
     width: parent.width
-    property string type: "NoConnectionsContent"  // Defines the type so loader can read name
-
-    signal addPCButtonClickedFromContent()
 
     //Top margin (after header)
     Rectangle {
             width: parent.width
-            height: parent.width * 0.04
+            height: parent.width * 2
             color: "transparent"
         }
 
@@ -28,8 +26,8 @@ Column  {
             horizontalAlignment: Text.AlignHCenter
             anchors.horizontalCenter: parent.horizontalCenter
 
-            text: StreamingPreferences.enableMdns ? qsTr("Searching for compatible hosts on your local network...")
-                                                  : qsTr("Automatic PC discovery is disabled. Add your PC manually.")
+            text: StreamingPreferences.enableMdns ? qsTr("Seeeeework...")
+                                                  : qsTr("Automatieeely.")
             font.pixelSize: Constants.fontSize1
             font.family: "SF Pro"
             font.bold: true
@@ -80,7 +78,7 @@ Column  {
     Item {
         id: footer
         width: parent.width
-        height: Constants.defaultWindowWidth * 0.11
+        height: Constants.defaultWindowWidth * 0.43
 
         Rectangle {
             id: background
@@ -91,13 +89,7 @@ Column  {
             radius: Constants.radiusInPixels
         }
 
-        AddPCButton {
-            id: addPCButton
-            width: parent.width
-            height: parent.height
-            footerRect: footer
-            onAddPCButtonClicked: addPCButtonClickedFromContent()
-        }
+
     }
 }
 

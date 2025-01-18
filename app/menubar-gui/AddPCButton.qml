@@ -6,6 +6,8 @@ Item {
     height: parent.height
     property Item footerRect
 
+    signal addPCButtonClicked()
+
     Rectangle {
         id: addPCButton
         width: parent.width * 0.38
@@ -36,8 +38,7 @@ Item {
 
 
             onClicked: {
-                console.log("Button clicked!");
-                footerRect.height *= 2;
+                addPCButtonClicked()
             }
             onPressed: {
                 addPCButton.pressed = true;

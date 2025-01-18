@@ -1,7 +1,6 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Window 2.15
-import "qrc:/menubar-gui" 1.0
 
 Window {
     width: Constants.defaultWindowWidth
@@ -16,8 +15,6 @@ Window {
     maximumHeight: appContainer.implicitHeight
     minimumWidth: Constants.defaultWindowWidth
     maximumWidth: Constants.defaultWindowWidth
-
-    property int currentState: AppState.noConnections
 
     Rectangle {
         id: appContainer
@@ -44,14 +41,16 @@ Window {
                         height: Constants.defaultWindowWidth * 0.13
                     }
 
-                    NoConnectionsContent {
-                        id: noConnectionsContent
+                    //Loads content based on current app state
+                    ContentLoader {
+                        id: contentLoader
                     }
 
                 }
 
 
     }
+
     Component.onCompleted: {
             console.log("Screen Width:", Constants.screenWidth)
             console.log("Default app width:", Constants.defaultWindowWidth)

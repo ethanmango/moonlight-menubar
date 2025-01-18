@@ -27,5 +27,7 @@
         <file>menubar-gui/AppState.qml</file>
         <file>menubar-gui/NoConnectionsContent.qml</file>
         <file>menubar-gui/AddPCButton.qml</file>
+        <file>menubar-gui/ConnectedContent.qml</file>
+        <file>menubar-gui/ContentLoader.qml</file>
     </qresource>
 </RCC>
